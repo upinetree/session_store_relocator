@@ -7,6 +7,13 @@ module SessionStoreRelocator
       @redis_session_store = RedisSessionStore.new(app, options[:redis_session_store])
     end
 
+    def prepare_session(*args)
+      super.tap do
+        req = args[0]
+        req.env['rack.redis-session'] = @redis_session_store
+      end
+    end
+
     def destroy_session(*args)
       super.tap do
         @redis_session_store.send(:destroy_session, *args)
