@@ -14,7 +14,7 @@ module SessionStoreRelocator
       end
     end
 
-    def destroy_session(*args)
+    def delete_session(*args)
       super.tap do
         @redis_session_store.send(:destroy_session, *args)
       end
